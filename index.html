@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Enchanted Adventure</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background-color: #fffbf0;
+      color: #333;
+      font-family: 'Arial', sans-serif;
+      padding: 20px;
+    }
+    #game-container {
+      max-width: 600px;
+      margin: auto;
+    }
+    h1 {
+      text-align: center;
+      color: #ff6f61;
+    }
+    #story {
+      font-size: 1.2em;
+      margin-bottom: 20px;
+    }
+    .choice-button {
+      display: block;
+      width: 100%;
+      padding: 15px;
+      margin: 10px 0;
+      background-color: #fff3cd;
+      border: none;
+      border-radius: 5px;
+      font-size: 1em;
+      cursor: pointer;
+    }
+    .choice-button:hover {
+      background-color: #ffeb9c;
+    }
+  </style>
+</head>
+<body>
+  <div id="game-container">
+    <h1>Enchanted Adventure</h1>
+    <div id="story">
+      <p>Tap to begin your magical journey!</p>
+    </div>
+    <div id="choices"></div>
+  </div>
+  <script>
+    const gameData = {
+      start: {
+        text: "You find a shiny, golden door in your backyard. What do you do?",
+        choices: [
+          { text: "Open the golden door.", nextScene: "magicForest" },
+          { text: "Knock on the door.", nextScene: "talkingDoor" },
+          { text: "Walk past it and see what's behind.", nextScene: "hiddenGarden" }
+        ]
+      },
+      magicForest: {
+        text: "You step into a magic forest filled with talking animals. Who do you talk to first?",
+        choices: [
+          { text: "A wise old owl.", nextScene: "owlWisdom" },
+          { text: "A playful monkey.", nextScene: "monkeyFun" },
+          { text: "A gentle giant turtle.", nextScene: "turtleRide" }
+        ]
+      },
+      talkingDoor: {
+        text: "The door speaks! It asks you a riddle: 'What has keys but can't open locks?'",
+        choices: [
+          { text: "A piano!", nextScene: "pianoLand" },
+          { text: "An old map?", nextScene: "mapAdventure" },
+          { text: "Say 'I don't know!'", nextScene: "doorLaughs" }
+        ]
+      },
+      hiddenGarden: {
+        text: "You discover a hidden garden with flowers that sing. What do you do?",
+        choices: [
+          { text: "Sing along with the flowers.", nextScene: "flowerSong" },
+          { text: "Pick a flower.", nextScene: "flowerFriend" },
+          { text: "Take a nap under a tree.", nextScene: "dreamLand" }
+        ]
+      },
+      // Additional scenes and endings
+      owlWisdom: {
+        text: "The owl shares wisdom and gives you a magical feather. You feel happy!",
+        choices: []
+      },
+      monkeyFun: {
+        text: "The monkey shows you how to swing on vines. You laugh and have fun!",
+        choices: []
+      },
+      turtleRide: {
+        text: "You ride on the turtle's back across a sparkling pond. It's so peaceful.",
+        choices: []
+      },
+      pianoLand: {
+        text: "You're transported to a land where everything makes music. You dance joyfully!",
+        choices: []
+      },
+      mapAdventure: {
+        text: "The map leads you on a treasure hunt filled with surprises!",
+        choices: []
+      },
+      doorLaughs: {
+        text: "The door laughs and opens wide, revealing a world of candy and sweets!",
+        choices: []
+      },
+      flowerSong: {
+        text: "You and the flowers create a beautiful song that makes the sun shine brighter.",
+        choices: []
+      },
+      flowerFriend: {
+        text: "The flower turns into a tiny fairy who becomes your friend!",
+        choices: []
+      },
+      dreamLand: {
+        text: "You have the sweetest dreams filled with rainbows and stars.",
+        choices: []
+      },
+    };
+
+    let currentScene = 'start';
+
+    const storyElement = document.getElementById('story');
+    const choicesElement = document.getElementById('choices');
+
+    function startGame() {
+      showScene(currentScene);
+    }
+
+    function showScene(sceneKey) {
+      const scene = gameData[sceneKey];
+      storyElement.innerHTML = `<p>${scene.text}</p>`;
+      choicesElement.innerHTML = '';
+
+      if (scene.choices.length > 0) {
+        scene.choices.forEach(choice => {
+          const button = document.createElement('button');
+          button.classList.add('choice-button');
+          button.textContent = choice.text;
+          button.addEventListener('click', () => {
+            showScene(choice.nextScene);
+          });
+          choicesElement.appendChild(button);
+        });
+      } else {
+        const restartButton = document.createElement('button');
+        restartButton.classList.add('choice-button');
+        restartButton.textContent = 'The End. Tap to play again!';
+        restartButton.addEventListener('click', () => {
+          currentScene = 'start';
+          showScene(currentScene);
+        });
+        choicesElement.appendChild(restartButton);
+      }
+    }
+
+    storyElement.addEventListener('click', startGame);
+  </script>
+</body>
+</html>
